@@ -19,7 +19,7 @@ export default (sequelize, DataTypes) => {
       allowNull: false,
       validate: {
         notEmpty: {
-          msg: 'Message content cannot be empty'
+          msg: 'Treść wiadomości nie może być pusta'
         }
       }
     }

@@ -137,7 +137,7 @@ export function MessagesTable({
                     variant="outline"
                     size="icon-sm"
                     onClick={() => handleEditClick(msg)}
-                    title="Edytuj"
+                    aria-label="Edytuj wiadomość"
                   >
                     <Pencil className="h-4 w-4" />
                   </Button>
@@ -145,7 +145,7 @@ export function MessagesTable({
                     variant="destructive"
                     size="icon-sm"
                     onClick={() => handleDeleteClick(msg)}
-                    title="Usuń"
+                    aria-label="Usuń wiadomość"
                   >
                     <Trash2 className="h-4 w-4" />
                   </Button>

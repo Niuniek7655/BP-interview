@@ -1,10 +1,11 @@
 ﻿"use client";
 
+import type { ReactNode } from 'react';
 import { Provider } from 'react-redux';
 import { store } from '@/lib/store';
 
 interface ProvidersProps {
-  children: React.ReactNode;
+  children: ReactNode;
 }
 
 export function Providers({ children }: ProvidersProps) {

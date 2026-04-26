@@ -6,8 +6,8 @@ import { config } from "dotenv";
 // Initialize environment variables
 config();
 
-// Import database connection (for checking connection)
-import sequelize from "./utils/database.js";
+// Import database connection from models (single shared instance)
+import { sequelize } from "./models/index.js";
 
 // Import routes
 import messagesRouter from "./routes/messages.js";
