@@ -11,10 +11,10 @@ RUN npm ci
 COPY . .
 
 # Install netcat for the database wait script
-RUN apt-get update && apt-get install -y netcat-openbsd && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y netcat-openbsd dos2unix && rm -rf /var/lib/apt/lists/*
 
-# Make the entrypoint script executable
-RUN chmod +x docker-entrypoint.sh
+# Convert line endings from Windows (CRLF) to Unix (LF) and make executable
+RUN dos2unix docker-entrypoint.sh && chmod +x docker-entrypoint.sh
 
 EXPOSE 8080
 
