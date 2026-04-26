@@ -32,6 +32,11 @@ services:
       - "8080:8080"
     networks:
       - backend
+    environment:
+      DB_HOST: db
+      DB_USER: root
+      DB_PASSWORD: interview123
+      DB_NAME: interview
     depends_on:
       - db
 
