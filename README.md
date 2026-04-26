@@ -57,7 +57,13 @@ Rozbudowa istniejącego projektu poprzez implementację formularza do dodawania 
 ## 🚀 Uruchomienie projektu
 
 1. Sklonuj repozytorium.
-2. W katalogu głównym uruchom:
+2. Skopiuj plik `.env.example` do `.env` i dostosuj wartości:
+
+```bash
+cp .env.example .env
+```
+
+3. W katalogu głównym uruchom:
 
 ```bash
 docker compose up

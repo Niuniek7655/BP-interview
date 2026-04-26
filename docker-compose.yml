@@ -13,14 +13,18 @@ services:
     image: mysql:8.0
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: interview123
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME}
     ports:
       - "3306:3306"
     networks:
       - backend
     volumes:
       - db-vol:/var/lib/mysql
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./init.sql:/docker-entrypoint-initdb.d/01-init.sql
+      - ./init-db.sh:/docker-entrypoint-initdb.d/02-init-db.sh
 
   backend:
     container_name: backend_api
@@ -32,6 +36,11 @@ services:
       - "8080:8080"
     networks:
       - backend
+    environment:
+      DB_HOST: ${DB_HOST}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME}
     depends_on:
       - db
 
