@@ -1,25 +1,22 @@
 ﻿'use strict';
 
+/**
+ * Przykładowe wiadomości do seedowania
+ */
+const SEED_CONTENTS = [
+  'Witaj w aplikacji wiadomości! To jest pierwsza przykładowa wiadomość.',
+  'To jest druga wiadomość testowa. Możesz ją edytować lub usunąć.',
+  'Trzecia wiadomość demonstracyjna. System wiadomości działa poprawnie!'
+];
+
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    const seedMessages = [
-      {
-        content: 'Witaj w aplikacji wiadomości! To jest pierwsza przykładowa wiadomość.',
-        createdAt: new Date(),
-        updatedAt: new Date()
-      },
-      {
-        content: 'To jest druga wiadomość testowa. Możesz ją edytować lub usunąć.',
-        createdAt: new Date(),
-        updatedAt: new Date()
-      },
-      {
-        content: 'Trzecia wiadomość demonstracyjna. System wiadomości działa poprawnie!',
-        createdAt: new Date(),
-        updatedAt: new Date()
-      }
-    ];
+    const seedMessages = SEED_CONTENTS.map(content => ({
+      content,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    }));
 
     // Sprawdź które wiadomości już istnieją w bazie danych
     const existingMessages = await queryInterface.sequelize.query(
@@ -42,17 +39,10 @@ module.exports = {
     }
   },
 
-  async down(queryInterface, Sequelize) {
+  async down(queryInterface) {
     // Usuń tylko te wiadomości, które zostały dodane przez seeder
-    const seedContents = [
-      'Witaj w aplikacji wiadomości! To jest pierwsza przykładowa wiadomość.',
-      'To jest druga wiadomość testowa. Możesz ją edytować lub usunąć.',
-      'Trzecia wiadomość demonstracyjna. System wiadomości działa poprawnie!'
-    ];
-
     await queryInterface.bulkDelete('Messages', {
-      content: seedContents
+      content: SEED_CONTENTS
     }, {});
   }
 };
-

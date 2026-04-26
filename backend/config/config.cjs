@@ -9,13 +9,15 @@ if (missingVars.length > 0) {
   process.exit(1);
 }
 
+const DB_PORT = parseInt(process.env.DB_PORT, 10) || 3306;
+
 module.exports = {
   development: {
     username: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
     host: process.env.DB_HOST,
-    port: 3306,
+    port: DB_PORT,
     dialect: 'mysql',
     logging: console.log
   },
@@ -24,7 +26,7 @@ module.exports = {
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
     host: process.env.DB_HOST,
-    port: 3306,
+    port: DB_PORT,
     dialect: 'mysql',
     logging: false
   },
@@ -33,7 +35,7 @@ module.exports = {
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
     host: process.env.DB_HOST,
-    port: 3306,
+    port: DB_PORT,
     dialect: 'mysql',
     logging: false
   }

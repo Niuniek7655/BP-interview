@@ -1,5 +1,4 @@
 import express from "express";
-import bodyParser from "body-parser";
 import cors from "cors";
 import { config } from "dotenv";
 
@@ -19,7 +18,7 @@ app.use(cors({
   origin: process.env.FRONTEND_URL || "http://localhost:3000",
   credentials: true
 }));
-app.use(bodyParser.json());
+app.use(express.json());
 
 // Routes
 app.use("/messages", messagesRouter);

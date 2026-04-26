@@ -57,7 +57,7 @@ export default function Home() {
             </div>
           )}
           <MessagesTable 
-            messages={messages.map(m => ({ id: m.id, message: m.content }))}
+            messages={messages}
             onEdit={handleEditMessage}
             onDelete={handleDeleteMessage}
             isLoading={isLoading}

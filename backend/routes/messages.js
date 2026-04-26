@@ -1,5 +1,7 @@
 ﻿import express from 'express';
 import { Message } from '../models/index.js';
+import { validateMessageBody } from '../middleware/validateMessage.js';
+import { findMessageById } from '../middleware/findMessage.js';
 
 const router = express.Router();
 
@@ -16,44 +18,15 @@ router.get('/', async (req, res, next) => {
 });
 
 // GET /messages/:id - pobierz pojedynczą wiadomość
-router.get('/:id', async (req, res, next) => {
-  try {
-    const { id } = req.params;
-    const message = await Message.findByPk(id);
-    
-    if (!message) {
-      return res.status(404).json({ 
-        success: false, 
-        message: 'Wiadomość nie została znaleziona' 
-      });
-    }
-    
-    res.status(200).json(message);
-  } catch (error) {
-    next(error);
-  }
+router.get('/:id', findMessageById, (req, res) => {
+  res.status(200).json(req.message);
 });
 
 // POST /messages - dodaj nową wiadomość
-router.post('/', async (req, res, next) => {
+router.post('/', validateMessageBody, async (req, res, next) => {
   try {
     const { content } = req.body;
-    
-    if (!content || !content.trim()) {
-      return res.status(400).json({ 
-        success: false, 
-        message: 'Treść wiadomości jest wymagana' 
-      });
-    }
-
-    if (content.trim().length < 3) {
-      return res.status(400).json({ 
-        success: false, 
-        message: 'Wiadomość musi mieć co najmniej 3 znaki' 
-      });
-    }
-    
-    const message = await Message.create({ content: content.trim() });
+    const message = await Message.create({ content });
     res.status(201).json(message);
   } catch (error) {
     next(error);
@@ -61,55 +34,20 @@ router.post('/', async (req, res, next) => {
 });
 
 // PUT /messages/:id - zaktualizuj wiadomość
-router.put('/:id', async (req, res, next) => {
+router.put('/:id', findMessageById, validateMessageBody, async (req, res, next) => {
   try {
-    const { id } = req.params;
     const { content } = req.body;
-    
-    if (!content || !content.trim()) {
-      return res.status(400).json({ 
-        success: false, 
-        message: 'Treść wiadomości jest wymagana' 
-      });
-    }
-
-    if (content.trim().length < 3) {
-      return res.status(400).json({ 
-        success: false, 
-        message: 'Wiadomość musi mieć co najmniej 3 znaki' 
-      });
-    }
-    
-    const message = await Message.findByPk(id);
-    
-    if (!message) {
-      return res.status(404).json({ 
-        success: false, 
-        message: 'Wiadomość nie została znaleziona' 
-      });
-    }
-    
-    await message.update({ content: content.trim() });
-    res.status(200).json(message);
+    await req.message.update({ content });
+    res.status(200).json(req.message);
   } catch (error) {
     next(error);
   }
 });
 
 // DELETE /messages/:id - usuń wiadomość
-router.delete('/:id', async (req, res, next) => {
+router.delete('/:id', findMessageById, async (req, res, next) => {
   try {
-    const { id } = req.params;
-    const message = await Message.findByPk(id);
-    
-    if (!message) {
-      return res.status(404).json({ 
-        success: false, 
-        message: 'Wiadomość nie została znaleziona' 
-      });
-    }
-    
-    await message.destroy();
+    await req.message.destroy();
     res.status(204).send();
   } catch (error) {
     next(error);

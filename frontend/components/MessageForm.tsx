@@ -4,6 +4,7 @@ import * as React from "react"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
+import { validateMessage } from "@/lib/validation"
 
 interface MessageFormProps {
   onSubmit?: (message: string) => void
@@ -17,20 +18,20 @@ export function MessageForm({ onSubmit, isSubmitting = false }: MessageFormProps
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     
-    // Walidacja
-    if (!message.trim()) {
-      setError("Wiadomość nie może być pusta")
-      return
-    }
-
-    if (message.trim().length < 3) {
-      setError("Wiadomość musi mieć co najmniej 3 znaki")
+    const validationError = validateMessage(message)
+    if (validationError) {
+      setError(validationError)
       return
     }
 
     setError(null)
     onSubmit?.(message.trim())
     setMessage("")
+  }
+
+  const handleMessageChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setMessage(e.target.value)
+    if (error) setError(null)
   }
 
   return (
@@ -41,10 +42,7 @@ export function MessageForm({ onSubmit, isSubmitting = false }: MessageFormProps
           id="message"
           placeholder="Wpisz swoją wiadomość..."
           value={message}
-          onChange={(e) => {
-            setMessage(e.target.value)
-            if (error) setError(null)
-          }}
+          onChange={handleMessageChange}
           className={error ? "border-destructive" : ""}
           rows={4}
         />
@@ -58,4 +56,3 @@ export function MessageForm({ onSubmit, isSubmitting = false }: MessageFormProps
     </form>
   )
 }
-
